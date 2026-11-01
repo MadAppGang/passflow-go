@@ -1,0 +1,38 @@
+{
+  "corpus_version": 2,
+  "description": "cases pins the freshness decision: reject when now - auth_time > max_age in whole seconds, no leeway on auth_time, a fractional now and a fractional auth_time truncated, an auth_time beyond 2^53 in magnitude read as absent. It binds the two libraries, and not the server. max_age_input pins what the freshness constructors accept: truncate toward zero to whole seconds, then require at least 1. effective is both the enforced and the emitted value.",
+  "cases": [
+    {"id": "age-equals-max-age", "now": 1700000600, "auth_time": 1700000300, "max_age": 300, "allow": true, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300"},
+    {"id": "age-one-over-max-age", "now": 1700000601, "auth_time": 1700000300, "max_age": 300, "allow": false, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300"},
+    {"id": "age-zero", "now": 1700000300, "auth_time": 1700000300, "max_age": 300, "allow": true, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300"},
+    {"id": "auth-time-in-the-future", "now": 1700000600, "auth_time": 1700000900, "max_age": 300, "allow": true, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "no leeway on auth_time; a negative age is not stale"},
+    {"id": "auth-time-absent", "now": 1700000600, "max_age": 300, "allow": false, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300"},
+    {"id": "auth-time-string", "now": 1700000600, "auth_time": "1700000300", "max_age": 300, "allow": false, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300"},
+    {"id": "auth-time-fractional-truncated-allowed", "now": 1700000600, "auth_time": 1700000300.9, "max_age": 300, "allow": true, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "truncated toward zero: age 300"},
+    {"id": "auth-time-fractional-truncated-rejected", "now": 1700000601, "auth_time": 1700000300.9, "max_age": 300, "allow": false, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "truncated toward zero: age 301; rounding up would allow it"},
+    {"id": "now-fractional-age-300-5", "now": 1700000600.5, "auth_time": 1700000300, "max_age": 300, "allow": true, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "whole seconds: the verification time truncates, so the age is 300"},
+    {"id": "now-fractional-age-300-999", "now": 1700000600.999, "auth_time": 1700000300, "max_age": 300, "allow": true, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "whole seconds: the age is 300"},
+    {"id": "now-fractional-age-301-25", "now": 1700000601.25, "auth_time": 1700000300, "max_age": 300, "allow": false, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "whole seconds: the age is 301"},
+    {"id": "auth-time-exactly-2-pow-53", "now": 1700000600, "auth_time": 9007199254740992, "max_age": 300, "allow": true, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "the largest value read as a date: in the future, so not stale"},
+    {"id": "auth-time-above-2-pow-53", "now": 1700000600, "auth_time": 9007199254740994, "max_age": 300, "allow": false, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "read as absent; read as a date it would be in the future and allowed"},
+    {"id": "auth-time-far-above-2-pow-53", "now": 1700000600, "auth_time": 1e+300, "max_age": 300, "allow": false, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "read as absent; read as a date it would never go stale"},
+    {"id": "auth-time-below-minus-2-pow-53", "now": 1700000600, "auth_time": -9007199254740994, "max_age": 300, "allow": false, "header_if_rejected": "Bearer error=\"insufficient_user_authentication\", max_age=300", "note": "read as absent"}
+  ],
+  "max_age_input": [
+    {"input": 300, "effective": 300},
+    {"input": 1.9, "effective": 1},
+    {"input": 0.9, "error": true},
+    {"input": 0, "error": true},
+    {"input": -5, "error": true},
+    {"input": "NaN", "error": true, "node_only": true},
+    {"input": "Infinity", "error": true, "node_only": true},
+    {"input": "-Infinity", "error": true, "node_only": true},
+    {"input": "undefined", "error": true, "node_only": true},
+    {"input": "null", "error": true, "node_only": true},
+    {"input": "\"300\"", "error": true, "node_only": true},
+    {"input": "{}", "error": true, "node_only": true},
+    {"input": 9007199254740991, "effective": 9007199254740991, "node_only": true},
+    {"input": 9007199254740992, "error": true, "node_only": true},
+    {"input": 1e+21, "error": true, "node_only": true}
+  ]
+}

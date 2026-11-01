@@ -1,0 +1,30 @@
+{
+  "corpus_version": 1,
+  "description": "What a reload does with a public key that is wrong (cases) and with a body that is not valid UTF-8 JSON text (body). A cases row mutates a key the harness generated and serves it beside a good one, so the corpus holds no key material. The README section key-acceptance.json says how to apply a row.",
+  "cases": [
+    {"id": "rsa-e-1", "kty": "RSA", "mutate": {"op": "set", "member": "e", "value": "AQ"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-e-2", "kty": "RSA", "mutate": {"op": "set", "member": "e", "value": "Ag"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-e-0", "kty": "RSA", "mutate": {"op": "set", "member": "e", "value": "AA"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-e-empty", "kty": "RSA", "mutate": {"op": "set", "member": "e", "value": ""}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-e-above-int32", "kty": "RSA", "mutate": {"op": "set", "member": "e", "value": "gAAAAQ"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-e-above-int64", "kty": "RSA", "mutate": {"op": "set", "member": "e", "value": "AQAAAAAAAAAB"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-e-non-canonical", "kty": "RSA", "mutate": {"op": "set", "member": "e", "value": "Ax"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-n-length-mod-4-is-1", "kty": "RSA", "mutate": {"op": "append", "member": "n", "value": "AAA"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-n-non-canonical", "kty": "RSA", "mutate": {"op": "set_unused_bit", "member": "n"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-n-line-feed", "kty": "RSA", "mutate": {"op": "append", "member": "n", "value": "\n"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "ec-x-non-canonical", "kty": "EC", "mutate": {"op": "set_unused_bit", "member": "x"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "ec-y-non-canonical", "kty": "EC", "mutate": {"op": "set_unused_bit", "member": "y"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "ec-x-31-bytes", "kty": "EC", "mutate": {"op": "drop_first_byte", "member": "x"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "ec-x-33-bytes", "kty": "EC", "mutate": {"op": "prepend_zero_byte", "member": "x"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "ec-y-33-bytes", "kty": "EC", "mutate": {"op": "prepend_zero_byte", "member": "y"}, "expect": {"outcome": "reload_fails", "stage": "key"}},
+    {"id": "rsa-key-ops-number-member", "kty": "RSA", "mutate": {"op": "set", "member": "key_ops", "value": ["verify", 1]}, "expect": {"outcome": "key_skipped"}},
+    {"id": "ec-key-ops-object-member", "kty": "EC", "mutate": {"op": "set", "member": "key_ops", "value": ["verify", {}]}, "expect": {"outcome": "key_skipped"}}
+  ],
+  "body": [
+    {"id": "body-leading-bom", "bytes": {"prefix_hex": "EFBBBF"}, "expect": {"outcome": "reload_fails", "stage": "parse"}},
+    {"id": "body-invalid-utf-8-in-unrelated-member", "bytes": {"note_hex": "FF"}, "expect": {"outcome": "reload_fails", "stage": "parse"}},
+    {"id": "body-surrogate-in-unrelated-member", "bytes": {"note_hex": "EDA080"}, "expect": {"outcome": "reload_fails", "stage": "parse"}},
+    {"id": "body-overlong-in-unrelated-member", "bytes": {"note_hex": "C080"}, "expect": {"outcome": "reload_fails", "stage": "parse"}},
+    {"id": "body-valid-utf-8-in-unrelated-member", "bytes": {"note_hex": "C3A9"}, "expect": {"outcome": "reload_succeeds"}}
+  ]
+}
