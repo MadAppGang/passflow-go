@@ -1,0 +1,17 @@
+{
+  "name": "resource-server-node-express",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@passflow/node": "0.1.0",
+    "cors": "2.8.6",
+    "express": "5.3.0"
+  }
+}

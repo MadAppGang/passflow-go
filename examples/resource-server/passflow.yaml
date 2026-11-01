@@ -1,0 +1,107 @@
+# Passflow for the resource-server examples: in-memory storage, local only.
+# Pass it to the Passflow server with --config=file://<path to this file>.
+#
+# Every value here is a local development placeholder. Do not deploy this file.
+
+general:
+  locale: en
+  host: http://localhost:8765
+  port: 8765
+  # What the example APIs verify `iss` against, and where they find the JWKS.
+  issuer: http://localhost:8765
+  error_url: http://localhost:8765/error
+  strict_unverified_unique_id_fields: false
+  immutable_id_fields:
+    - email
+  unique_id_fields:
+    - phone
+    - email
+    - nickname
+
+# Used by `devtool seed` to create the two applications.
+management_keys:
+  - test-management-key
+
+security:
+  # Minutes. Pinned so that the 5-minute freshness wait in the browser run never
+  # outlives the token it is measuring.
+  access_token_lifetime: 30
+  password_hash:
+    type: argon2i
+    salt_length: 32
+    pepper: weak_pepper
+    argon:
+      memory: 65535
+      iterations: 3
+      parallelism: 2
+      key_length: 32
+  password_policy:
+    restrict_min_password_length: true
+    min_password_length: 8
+    reject_compromised: false
+    enforce_password_strength: none
+  management_roles:
+    - owner
+    - admin
+
+storage:
+  default:
+    type: sql
+    sql:
+      type: sqlite
+      connection: "file::memory:?cache=shared"
+
+static_storage:
+  url: http://localhost:8765/static
+  storage:
+    type: memory
+
+migrations:
+  - type: default
+
+services:
+  email:
+    type: mock
+  sms:
+    type: mock
+
+# The signing key is generated on first start. *.pem is ignored by git.
+key_storage:
+  type: local
+  local:
+    path: "./private_key.pem"
+
+login_web_app:
+  default:
+    app_id: 2c1YxcUe7VBpqQmgKchVO73LU1p
+    redirect: http://localhost:8765/web/signin
+    scopes: ["openid", "email", "profile"]
+    create_tenant_for_new_user: true
+  storage:
+    type: local
+    local:
+      path: ./static/login
+
+admin_panel:
+  enabled: false
+
+# Request dumps would write bearer tokens to the server log.
+logger:
+  dump_request: false
+  log_level: info
+
+email_templates:
+  type: local
+  local:
+    path: ./static/email_templates
+
+passkey:
+  id: localhost
+  name: Passflow examples
+  display_name: Passflow examples
+  id_field: email
+  registration:
+    user_verification: discouraged
+    authenticator_attachment: any
+    discoverable_key: preferred
+    attestation_metadata: preferred

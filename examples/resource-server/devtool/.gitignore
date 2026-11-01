@@ -1,0 +1,5 @@
+# Testdata credentials and tokens from `devtool seed` and `devtool tokens`.
+.out/
+
+# The binary `go build` leaves here.
+/devtool

@@ -1,0 +1,87 @@
+:root {
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-4: 1rem;
+  --radius: 0.25rem;
+  --border: 1px solid CanvasText;
+  --content-width: 60rem;
+  --console-height: 20rem;
+  --route-min-width: 20rem;
+  --font-body: system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --font-weight-strong: bold;
+}
+
+main {
+  display: grid;
+  gap: var(--space-4);
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-4);
+  font-family: var(--font-body);
+}
+
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-1) var(--space-4);
+}
+
+dt {
+  font-weight: var(--font-weight-strong);
+}
+
+dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+pre,
+.console {
+  font-family: var(--font-mono);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  overflow: auto;
+}
+
+.sign-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-2);
+}
+
+.sign-in label {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.routes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--route-min-width), 1fr));
+  gap: var(--space-4);
+}
+
+.route {
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  min-width: 0;
+}
+
+.console {
+  height: var(--console-height);
+  margin: var(--space-2) 0 0;
+  list-style: none;
+}
+
+.console li {
+  overflow-wrap: anywhere;
+}
+
+.console li[data-level='warn'] span,
+.console li[data-level='error'] span {
+  font-weight: var(--font-weight-strong);
+  text-transform: uppercase;
+}
