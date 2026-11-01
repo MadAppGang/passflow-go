@@ -6,7 +6,7 @@ Go libraries for services that accept [Passflow](https://passflow.io) tokens. `a
 go get github.com/madappgang/passflow-go/auth
 ```
 
-Requires Go 1.24 or newer, and its only dependency is `github.com/golang-jwt/jwt/v5` v5.3.0.
+Requires Go 1.27 or newer, and its only dependency is `github.com/golang-jwt/jwt/v5` v5.3.0.
 
 ## Use it
 

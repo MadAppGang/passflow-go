@@ -1,6 +1,6 @@
 module github.com/madappgang/passflow-go/examples/resource-server/go-chi
 
-go 1.24
+go 1.27.0
 
 require (
 	github.com/go-chi/chi/v5 v5.2.4

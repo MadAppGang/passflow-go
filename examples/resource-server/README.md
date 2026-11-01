@@ -25,7 +25,7 @@ Both APIs expose the same routes:
 
 ## Run it
 
-You need Docker, Go 1.24 or newer, Node 22.12 or newer and pnpm. Run each server in its own
+You need Docker, Go 1.27 or newer, Node 22.12 or newer and pnpm. Run each server in its own
 terminal, from `examples/resource-server`. For a Passflow server of your own, pass `--server` and
 `--key` to `devtool seed` and `devtool tokens`, and use its issuer below.
 

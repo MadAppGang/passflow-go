@@ -2,4 +2,4 @@
 // of github.com/madappgang/passflow-go. They are not part of that module.
 module github.com/madappgang/passflow-go/examples
 
-go 1.24
+go 1.27.0
