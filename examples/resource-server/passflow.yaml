@@ -1,5 +1,5 @@
 # Passflow for the resource-server examples: in-memory storage, local only.
-# Pass it to the Passflow server with --config=file://<path to this file>.
+# docker-compose.yml starts Passflow with it.
 #
 # Every value here is a local development placeholder. Do not deploy this file.
 

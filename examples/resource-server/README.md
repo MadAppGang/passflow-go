@@ -1,8 +1,8 @@
 # Resource server examples
 
 Protect your own API with Passflow tokens, in Go and in Node, and watch the React SDK answer a
-step-up challenge from it. The examples install the published packages, so they run from a plain
-clone of this repository. You need a Passflow server for them to talk to.
+step-up challenge from it. The examples install the published packages and run Passflow from its
+Docker image, so they work from a plain clone of this repository.
 
 | Directory | What it is | Port |
 |---|---|---|
@@ -10,7 +10,8 @@ clone of this repository. You need a Passflow server for them to talk to.
 | [`node-express/`](node-express) | Express API on [`@passflow/node`](https://www.npmjs.com/package/@passflow/node) | 8082 |
 | [`react-client/`](react-client) | Vite page on `@passflow/react`, on another origin | 5173 |
 | [`devtool/`](devtool) | Creates the testdata and issues real tokens through Passflow's public API | |
-| [`passflow.yaml`](passflow.yaml) | Passflow config: issuer `http://localhost:8765`, 30-minute access tokens | 8765 |
+| [`docker-compose.yml`](docker-compose.yml) | Passflow from `passflow/passflow` | 8765 |
+| [`passflow.yaml`](passflow.yaml) | Its config: issuer `http://localhost:8765`, 30-minute access tokens | |
 | [`scripts/api-check.sh`](scripts/api-check.sh) | Black-box check of an API with those real tokens | |
 
 Both APIs expose the same routes:
@@ -24,21 +25,23 @@ Both APIs expose the same routes:
 
 ## Run it
 
-You need Go 1.24 or newer, Node 22.12 or newer and pnpm. Run each server in its own terminal, from
-`examples/resource-server`. The commands assume a Passflow server at `http://localhost:8765` that
-uses [`passflow.yaml`](passflow.yaml). For any other server, pass `--server` and `--key` to `devtool
-seed` and `devtool tokens`, and use its issuer below.
+You need Docker, Go 1.24 or newer, Node 22.12 or newer and pnpm. Run each server in its own
+terminal, from `examples/resource-server`. For a Passflow server of your own, pass `--server` and
+`--key` to `devtool seed` and `devtool tokens`, and use its issuer below.
 
 ```sh
-# 1. Testdata: two apps and a user with TOTP. Note app A's ID, the password and the TOTP secret.
+# 1. Passflow. It keeps everything in memory, so step 2 starts again after a restart.
+docker compose up
+
+# 2. Testdata: two apps and a user with TOTP. Note app A's ID, the password and the TOTP secret.
 (cd devtool && go run . seed)
 
-# 2. The APIs.
+# 3. The APIs.
 (cd go-chi && PASSFLOW_ISSUER=http://localhost:8765 PASSFLOW_AUDIENCE=<app A> go run .)
 
 (cd node-express && pnpm install && PASSFLOW_ISSUER=http://localhost:8765 PASSFLOW_AUDIENCE=<app A> pnpm start)
 
-# 3. The browser client. Set VITE_PASSFLOW_APP_ID to app A, and VITE_API_URL to the API under test.
+# 4. The browser client. Set VITE_PASSFLOW_APP_ID to app A, and VITE_API_URL to the API under test.
 cd react-client
 cp .env.example .env.local
 pnpm install && pnpm dev

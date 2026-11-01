@@ -1,0 +1,9 @@
+# Passflow for the resource-server examples, local only: docker compose up
+services:
+  passflow:
+    image: ${PASSFLOW_IMAGE:-passflow/passflow:latest}
+    command: ["--config=file://./passflow.yaml"]
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./passflow.yaml:/passflow.yaml:ro
