@@ -1,6 +1,6 @@
 # Resource server React client
 
-A Vite page that calls an example API through `@passflow/react` 0.15.0: sign in with a password,
+A Vite page that calls an example API through `@passflow/react` 0.15.1: sign in with a password,
 press a route button, and answer the upgrade dialog when the API asks for more assurance.
 It is a developer demo, not a shipped UI.
 

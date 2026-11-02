@@ -167,8 +167,8 @@ importers:
   .:
     dependencies:
       '@passflow/react':
-        specifier: 0.15.0
-        version: 0.15.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(debug@4.4.3)(react-dom@19.3.1(react@19.3.1))(react-router@8.5.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
+        specifier: 0.15.1
+        version: 0.15.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(debug@4.4.3)(react-dom@19.3.1(react@19.3.1))(react-router@8.5.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
       react:
         specifier: ^19.3.1
         version: 19.3.1
@@ -235,8 +235,8 @@ packages:
     resolution: {integrity: sha512-dbpfHRwrps4icTziL9cf9PW1Sg5Bt7kpCFJUwYNT4teinYAGHAZeJm/FXXdNutkoAfXAjkjFQOOWYajPMTNcPw==}
     engines: {node: ^22.12.0 || ^24.0.0 || >=26.0.0}
 
-  '@passflow/react@0.15.0':
-    resolution: {integrity: sha512-PBVW+j9RN5iBkTKUcvVDCELgxeTSHVUfMcWM4dDDdQG85bGO99PLiTaLYOWjsAeMqtK0b+PsjOrB3TAs7doX4Q==}
+  '@passflow/react@0.15.1':
+    resolution: {integrity: sha512-pbGE+vtDAEzcFLxtbuPkmpzNnL3YrFiKUXQsiNo87UrkzIL2lpT64P2TdA3BDmkVVj+hWTKcSvGIl03NTnH55g==}
     engines: {node: ^22.12.0 || ^24.0.0 || >=26.0.0}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
@@ -1037,9 +1037,6 @@ packages:
     resolution: {integrity: sha512-WkUDrojuJs0xkgGf2udWxa3yGBRxPtxUkB79i6aCZLRgc7PM8fZe9TosfPDcvEpQZbuFASnHYmRLBLUbmLOIIA==}
     engines: {node: '>= 12.0.0'}
 
-  lodash@4.18.1:
-    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
-
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
@@ -1188,9 +1185,6 @@ packages:
     resolution: {integrity: sha512-pyrgNqiEBHA9KlEtg9quYGagtrlTyukL3ryQ+RmjRn9SYmcNQmfa+sWIsI+hlcL4WrmFdrt7IfM6o8ktBAooDQ==}
     engines: {node: '>=20'}
 
-  tailwind-merge@3.7.0:
-    resolution: {integrity: sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==}
-
   terser@5.51.2:
     resolution: {integrity: sha512-bWnjSNscmuI+GJze6ZupnHP8G/cTcsJF+bXCeQknk2SHQsgbNJnLrqiH9jZ2W4STPVXH2mDKKRX3iwPhc9Cn/Q==}
     engines: {node: '>=10'}
@@ -1337,7 +1331,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@passflow/react@0.15.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(debug@4.4.3)(react-dom@19.3.1(react@19.3.1))(react-router@8.5.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)':
+  '@passflow/react@0.15.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(debug@4.4.3)(react-dom@19.3.1(react@19.3.1))(react-router@8.5.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@passflow/core': 0.20.1(debug@4.4.3)
       '@radix-ui/react-dialog': 1.3.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -1347,7 +1341,6 @@ snapshots:
       countries-and-timezones: 3.11.0
       dayjs: 1.11.23
       input-otp: 1.5.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      lodash: 4.18.1
       phone: 3.1.72
       query-string: 10.0.0
       react: 19.3.1
@@ -1356,7 +1349,6 @@ snapshots:
       react-hook-form: 7.91.0(@types/react@19.3.0)(react@19.3.1)
       react-international-phone: 4.8.0(react@19.3.1)
       react-router: 8.5.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      tailwind-merge: 3.7.0
       yup: 1.7.1
     transitivePeerDependencies:
       - '@types/react'
@@ -1956,8 +1948,6 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.33.0
       lightningcss-win32-x64-msvc: 1.33.0
 
-  lodash@4.18.1: {}
-
   math-intrinsics@1.1.0: {}
 
   mime-db@1.52.0: {}
@@ -2086,8 +2076,6 @@ snapshots:
     optional: true
 
   split-on-first@4.0.0: {}
-
-  tailwind-merge@3.7.0: {}
 
   terser@5.51.2:
     dependencies:
