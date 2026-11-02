@@ -254,14 +254,19 @@ func (s *keySet) fetch(ctx context.Context) (map[string]publicKey, error) {
 	if err != nil {
 		return nil, unavailable("network")
 	}
-	defer resp.Body.Close()
-
+	stage := ""
+	var body []byte
 	if resp.StatusCode != http.StatusOK {
-		return nil, unavailable("status")
+		stage = "status"
+	} else if body, err = readCapped(resp, s.opts.MaxBytes); err != nil {
+		stage = "body"
 	}
-	body, err := readCapped(resp, s.opts.MaxBytes)
-	if err != nil {
-		return nil, unavailable("body")
+	// A failed close counts against the body, unless an earlier stage already failed.
+	if err := resp.Body.Close(); err != nil && stage == "" {
+		stage = "body"
+	}
+	if stage != "" {
+		return nil, unavailable(stage)
 	}
 	keys, stage := parseKeySet(body)
 	if stage != "" {

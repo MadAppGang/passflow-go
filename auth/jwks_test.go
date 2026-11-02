@@ -243,8 +243,8 @@ func TestRefresh_KeyPublishedAfterTheCallIsInTheSet(t *testing.T) {
 			<-called
 			// A held fetch cannot satisfy the call, nor can Refresh return before it.
 			select {
-			case <-result:
-				t.Fatal("Refresh returned before pre-call response was released")
+			case err := <-result:
+				t.Fatalf("Refresh returned before pre-call response was released: %v", err)
 			default:
 			}
 			// A second Refresh ending its wait must not wait for the server's timeout.

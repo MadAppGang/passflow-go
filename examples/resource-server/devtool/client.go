@@ -148,11 +148,12 @@ func (a *api) post(path string, headers map[string]string, body string, out any)
 	if err != nil {
 		return fmt.Errorf("POST %s: %w", path, err)
 	}
-	defer resp.Body.Close()
-
 	answer, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return fmt.Errorf("POST %s: read the answer: %w", path, err)
+		return errors.Join(fmt.Errorf("POST %s: read the answer: %w", path, err), resp.Body.Close())
+	}
+	if err := resp.Body.Close(); err != nil {
+		return fmt.Errorf("POST %s: close the answer: %w", path, err)
 	}
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("POST %s: status %d: %s", path, resp.StatusCode, truncate(answer))
