@@ -1,0 +1,13 @@
+# Supply-chain policy, the same in passflow-js-sdk and passflow-react-sdk (PFL-779).
+# pnpm installs a third-party release only once it is 3 days old, and re-checks the
+# lockfile against that rule on every install, frozen ones included. Our own
+# @passflow/* packages are exempt, so a fresh SDK release can be adopted at once.
+minimumReleaseAge: 4320
+minimumReleaseAgeStrict: true
+minimumReleaseAgeExclude:
+  - '@passflow/*'
+# pnpm 12 runs no dependency install scripts unless they are listed here. These two only
+# fetch their native binaries (the SWC compiler for the React plugin, and esbuild).
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
