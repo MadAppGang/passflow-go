@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"crypto/ecdh"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rsa"
@@ -425,20 +424,16 @@ func acceptP256(member map[string]json.RawMessage) (publicKey, error) {
 	if len(x) != p256CoordinateLen || len(y) != p256CoordinateLen {
 		return publicKey{}, errors.New("bad coordinate length")
 	}
-	// crypto/ecdh rejects a point off the curve. ecdsa.ParseUncompressedPublicKey needs Go 1.25,
-	// and this module declares go 1.24.
+	// ParseUncompressedPublicKey rejects a point off the curve and the point at infinity.
 	uncompressed := make([]byte, 0, 1+2*p256CoordinateLen)
 	uncompressed = append(uncompressed, 4)
 	uncompressed = append(uncompressed, x...)
 	uncompressed = append(uncompressed, y...)
-	if _, err := ecdh.P256().NewPublicKey(uncompressed); err != nil {
+	key, err := ecdsa.ParseUncompressedPublicKey(elliptic.P256(), uncompressed)
+	if err != nil {
 		return publicKey{}, errors.New("point not on the curve")
 	}
-	return publicKey{kind: keyKindP256, key: &ecdsa.PublicKey{
-		Curve: elliptic.P256(),
-		X:     new(big.Int).SetBytes(x),
-		Y:     new(big.Int).SetBytes(y),
-	}}, nil
+	return publicKey{kind: keyKindP256, key: key}, nil
 }
 
 func jwkString(member map[string]json.RawMessage, name string) (string, bool) {
