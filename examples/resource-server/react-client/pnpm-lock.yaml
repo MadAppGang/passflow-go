@@ -167,8 +167,8 @@ importers:
   .:
     dependencies:
       '@passflow/react':
-        specifier: 0.16.0
-        version: 0.16.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(debug@4.4.3)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 0.17.0
+        version: 0.17.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(debug@4.4.3)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       react:
         specifier: ^19.3.1
         version: 19.3.1
@@ -228,12 +228,12 @@ packages:
   '@oxc-project/types@0.156.0':
     resolution: {integrity: sha512-1Duyg48TdJNdyhEB8Xn1L36bT9Pv6GUtlKjHxOys8xkaF/rQq3XJE+bAurSK/AgIz5mGFsb77cn9Pb20+WCScw==}
 
-  '@passflow/core@0.20.1':
-    resolution: {integrity: sha512-dbpfHRwrps4icTziL9cf9PW1Sg5Bt7kpCFJUwYNT4teinYAGHAZeJm/FXXdNutkoAfXAjkjFQOOWYajPMTNcPw==}
+  '@passflow/core@0.21.1':
+    resolution: {integrity: sha512-dTBNc93Z0ZjpEuYMGqZJRxjatbXhpnA2+YCd4lg/R4lfsd2CpJYJXjesFp7Jkfzim86+Gv59jIlFQlaon13ctw==}
     engines: {node: ^22.12.0 || ^24.0.0 || >=26.0.0}
 
-  '@passflow/react@0.16.0':
-    resolution: {integrity: sha512-8WEgNOhGWgTCe1Y+0OB8KtsjYQe7TUk1J4mfewyhtH6RWZTFKAfDGZbGV5aGBpUSLLtnNp4kvCKwquohn77SPg==}
+  '@passflow/react@0.17.0':
+    resolution: {integrity: sha512-wGDgRkUyhCvL5dq1D18v9sJBWxL7d1dnOwp/X5L7zUY7/yCKEBgUE22fUoVP3PyKMhZiZqxQIaPEVyig7xVHyg==}
     engines: {node: ^22.12.0 || ^24.0.0 || >=26.0.0}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
@@ -1297,7 +1297,7 @@ snapshots:
 
   '@oxc-project/types@0.156.0': {}
 
-  '@passflow/core@0.20.1(debug@4.4.3)':
+  '@passflow/core@0.21.1(debug@4.4.3)':
     dependencies:
       '@simplewebauthn/browser': 14.0.0
       axios: 1.21.0(debug@4.4.3)
@@ -1305,9 +1305,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@passflow/react@0.16.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(debug@4.4.3)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@passflow/react@0.17.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(debug@4.4.3)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@passflow/core': 0.20.1(debug@4.4.3)
+      '@passflow/core': 0.21.1(debug@4.4.3)
       '@radix-ui/react-dialog': 1.3.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@radix-ui/react-popover': 1.3.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@simplewebauthn/browser': 14.0.0
