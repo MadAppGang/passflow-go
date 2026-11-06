@@ -13,12 +13,17 @@ go run . totp <secret>
 
 | Command | What it does |
 |---|---|
-| `seed` | Creates app A (origin `http://localhost:5173`) and app B, both `Offline` with the 2FA policy `disabled`. Registers one password user on app A and enrols TOTP through `/user/2fa/setup/*`. Prints the app IDs, the user and the TOTP secret, and writes them to `seed.json`. Each run makes new apps and a new user. |
+| `seed` | Creates app A (origin `http://localhost:5173`) and app B, both `Offline`, with PKCE on and the 2FA policy `disabled`. Registers one password user on app A and enrols TOTP through `/user/2fa/setup/*`. Prints the app IDs, the user and the TOTP secret, and writes them to `seed.json`. Each run makes new apps and a new user. |
 | `tokens` | Signs in on app A (`aal1.jwt`, `aal1.refresh`), upgrades that session with TOTP on `/auth/refresh` (`aal2.jwt`), and signs in on app B (`wrong-aud.jwt`). Writes the `tokens.json` manifest and prints `T0`, the `auth_time` of `aal2.jwt`. |
 | `totp <secret>` | Prints the current code for a TOTP secret. |
 
 Every sign-in sends the scopes `offline` and `id`. Passflow issues a refresh token and a `sid` only
 when `offline` is requested and the app is `Offline`, and an upgrade needs both.
+
+Every registration and sign-in uses PKCE, as a browser app does. Devtool creates a random
+`verifier`, sends its S256 hash as `code_challenge` to `/auth/register` or `/auth/login`, and trades
+the one-time `code` from the answer, with the `verifier`, for the tokens on `/auth/pkce_exchange`.
+An app with PKCE off returns the tokens at once, and devtool uses them.
 
 `tokens.json` is an array with one entry per token: `{file, app, acr, auth_time, exp}`.
 

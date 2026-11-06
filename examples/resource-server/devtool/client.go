@@ -3,8 +3,11 @@ package main
 import (
 	"bytes"
 	"crypto/hmac"
+	"crypto/rand"
 	"crypto/sha1" //nolint:gosec // RFC 6238 TOTP uses HMAC-SHA1, as Passflow does.
+	"crypto/sha256"
 	"encoding/base32"
+	"encoding/base64"
 	"encoding/binary"
 	"encoding/json"
 	"errors"
@@ -26,11 +29,13 @@ const (
 
 	// appTemplate has the settings the validation depends on: Offline issues refresh tokens, and
 	// the disabled 2FA policy keeps a password sign-in at AAL1 while upgrades still work. A web app
-	// sends no request signature, so the browser can use it.
+	// sends no request signature, so the browser can use it. PKCE is asked for by name, because
+	// older servers create an app with PKCE off unless the body turns it on.
 	appTemplate = `{
   "name": "%s",
   "active": true,
   "offline": true,
+  "pkce_enabled": true,
   "type": "web",
   "redirect_urls": ["%s"],
   "origins": ["%s"],
@@ -42,10 +47,14 @@ const (
     {"type": "internal", "strategy": {"identity": "email", "challenge": "password", "transport": "none"}}
   ]
 }`
-	registerTemplate = `{"user":{"email":"%s","password":"%s"},"create_tenant":true,"scopes":["offline","id"]}`
-	signInTemplate   = `{"email":"%s","password":"%s","scopes":["offline","id"]}`
+	registerTemplate = `{"user":{"email":"%s","password":"%s"},"create_tenant":true,"scopes":["offline","id"],"code_challenge":"%s"}`
+	signInTemplate   = `{"email":"%s","password":"%s","scopes":["offline","id"],"code_challenge":"%s"}`
+	exchangeTemplate = `{"authz_code":"%s","verifier":"%s"}`
 	upgradeTemplate  = `{"upgrade":{"type":"totp","assertion":{"code":"%s"}}}`
 	confirmTemplate  = `{"code":"%s"}`
+
+	// verifierBytes gives a 43-character base64url verifier, the RFC 7636 minimum.
+	verifierBytes = 32
 )
 
 // api calls the public HTTP API of one Passflow server.
@@ -58,6 +67,13 @@ type api struct {
 type tokenPair struct {
 	Access  string `json:"access_token"`
 	Refresh string `json:"refresh_token"`
+}
+
+// signInAnswer is what /auth/register and /auth/login return: a one-time code when the app has
+// PKCE on, the tokens themselves when it has PKCE off.
+type signInAnswer struct {
+	tokenPair
+	Code string `json:"code"`
 }
 
 func newAPI(baseURL string) *api {
@@ -83,17 +99,47 @@ func (a *api) createApp(managementKey, name string) (string, error) {
 }
 
 func (a *api) register(appID, email, password string) (tokenPair, error) {
-	var tokens tokenPair
-	body := fmt.Sprintf(registerTemplate, email, password)
-	err := a.post("/auth/register", map[string]string{headerClientID: appID}, body, &tokens)
-	return tokens, err
+	return a.signInWithPKCE(appID, "/auth/register", func(challenge string) string {
+		return fmt.Sprintf(registerTemplate, email, password, challenge)
+	})
 }
 
 func (a *api) signIn(appID, email, password string) (tokenPair, error) {
+	return a.signInWithPKCE(appID, "/auth/login", func(challenge string) string {
+		return fmt.Sprintf(signInTemplate, email, password, challenge)
+	})
+}
+
+// signInWithPKCE sends a sign-in with a new S256 code_challenge, then trades the code it returns
+// for the tokens on /auth/pkce_exchange, with the verifier only this call holds. An app with PKCE
+// off ignores the challenge and returns the tokens at once.
+func (a *api) signInWithPKCE(appID, path string, body func(challenge string) string) (tokenPair, error) {
+	verifier, challenge, err := newPKCEPair()
+	if err != nil {
+		return tokenPair{}, err
+	}
+	headers := map[string]string{headerClientID: appID}
+	var answer signInAnswer
+	if err := a.post(path, headers, body(challenge), &answer); err != nil {
+		return tokenPair{}, err
+	}
+	if answer.Code == "" {
+		return answer.tokenPair, nil
+	}
 	var tokens tokenPair
-	body := fmt.Sprintf(signInTemplate, email, password)
-	err := a.post("/auth/login", map[string]string{headerClientID: appID}, body, &tokens)
+	err = a.post("/auth/pkce_exchange", headers, fmt.Sprintf(exchangeTemplate, answer.Code, verifier), &tokens)
 	return tokens, err
+}
+
+// newPKCEPair returns a random verifier and its S256 code_challenge (RFC 7636 §4.1-4.2).
+func newPKCEPair() (verifier, challenge string, err error) {
+	random := make([]byte, verifierBytes)
+	if _, err := rand.Read(random); err != nil {
+		return "", "", err
+	}
+	verifier = base64.RawURLEncoding.EncodeToString(random)
+	sum := sha256.Sum256([]byte(verifier))
+	return verifier, base64.RawURLEncoding.EncodeToString(sum[:]), nil
 }
 
 // enrolTOTP enrols TOTP through the v1 setup endpoints, which take no app policy, and returns the
