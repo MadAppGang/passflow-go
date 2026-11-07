@@ -29,7 +29,7 @@ security:
   password_hash:
     type: argon2i
     salt_length: 32
-    pepper: weak_pepper
+    pepper: test-pepper-not-a-secret
     argon:
       memory: 65535
       iterations: 3
