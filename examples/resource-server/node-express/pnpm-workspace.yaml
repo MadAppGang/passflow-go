@@ -1,4 +1,4 @@
-# Supply-chain policy, the same in passflow-js-sdk and passflow-react-sdk (PFL-779).
+# Supply-chain policy, the same in passflow-js-sdk and passflow-react-sdk.
 # pnpm installs a third-party release only once it is 3 days old, and re-checks the
 # lockfile against that rule on every install, frozen ones included. Our own
 # @passflow/* packages are exempt, so a fresh SDK release can be adopted at once.

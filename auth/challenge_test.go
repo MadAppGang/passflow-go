@@ -19,13 +19,11 @@ type challengeCorpus struct {
 	} `json:"cases"`
 }
 
-// REQ-16
 func TestChallenge_TruncatesToWholeSeconds(t *testing.T) {
 	c := auth.Challenge{ACRValues: "2", MaxAge: 2500 * time.Millisecond}
 	equal(t, c.String(), `Bearer error="insufficient_user_authentication", acr_values="2", max_age=2`)
 }
 
-// REQ-16
 func TestChallenge_OmitsNonPositiveMaxAge(t *testing.T) {
 	for _, age := range []time.Duration{0, -5 * time.Second, 900 * time.Millisecond, -900 * time.Millisecond} {
 		equal(t, (auth.Challenge{MaxAge: age}).String(), `Bearer error="insufficient_user_authentication"`)

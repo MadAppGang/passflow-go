@@ -1,6 +1,6 @@
 # passflow-go
 
-Go libraries for services that accept [Passflow](https://passflow.io) tokens. `auth` protects an HTTP endpoint with a verified access token. When the token's authentication is too weak or too old, it answers with the RFC 9470 step-up challenge that the Passflow browser SDK understands.
+Go libraries for services that accept [Passflow](https://github.com/madappgang/passflow) tokens. `auth` protects an HTTP endpoint with a verified access token. When the token's authentication is too weak or too old, it answers with the RFC 9470 step-up challenge that the Passflow browser SDK understands.
 
 ```bash
 go get github.com/madappgang/passflow-go/auth
@@ -106,6 +106,6 @@ A release is two tags in the Passflow repository, pushed in this order:
 
 The order matters because `authgin/go.mod` requires a core version that must already exist, and the workflow checks that requirement against the proxy and fails the run if it does not resolve.
 
-This repository is a read-only mirror: each commit here is a snapshot published from the Passflow source repository, and pull requests are not merged here because the next sync would overwrite them. To report a problem or ask for a change, email [i@madappgang.com](mailto:i@madappgang.com).
+This repository is a read-only mirror: each commit here is a snapshot published from the Passflow source repository, and pull requests are not merged here because the next sync would overwrite them. To report a problem or ask for a change, email [support@passflow.cloud](mailto:support@passflow.cloud).
 
 The module is MIT licensed, as [LICENSE](LICENSE) states, and that license is separate from the Passflow server's.

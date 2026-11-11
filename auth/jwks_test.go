@@ -41,7 +41,7 @@ func promptVerify(t testing.TB, v *auth.Verifier, raw string) {
 	}
 }
 
-// REQ-5: a successful reload replaces the set; it never accumulates retired keys.
+// A successful reload replaces the set; it never accumulates retired keys.
 func TestJWKS_ReloadReplacesWholeSet(t *testing.T) {
 	k1 := generateTestKey(t, "RSA", "k1", 2048)
 	k2 := generateTestKey(t, "RSA", "k2", 2048)
@@ -58,7 +58,6 @@ func TestJWKS_ReloadReplacesWholeSet(t *testing.T) {
 	equal(t, h.count.Load(), int64(2))
 }
 
-// REQ-5
 func TestJWKS_MinRefreshIntervalGate(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -77,7 +76,6 @@ func TestJWKS_MinRefreshIntervalGate(t *testing.T) {
 	equal(t, h.count.Load(), int64(2))
 }
 
-// REQ-5
 func TestJWKS_SingleFlight(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -98,7 +96,6 @@ func TestJWKS_SingleFlight(t *testing.T) {
 	equal(t, h.count.Load(), int64(1))
 }
 
-// REQ-6
 func TestJWKS_VerifyReturnsWhileRefreshHangs(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -132,7 +129,6 @@ func TestJWKS_VerifyReturnsWhileRefreshHangs(t *testing.T) {
 	equal(t, h.count.Load(), int64(2))
 }
 
-// REQ-5
 func TestJWKS_OneRequestNeverCostsTwoFetches(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	for _, row := range []struct {
@@ -169,12 +165,10 @@ func TestJWKS_OneRequestNeverCostsTwoFetches(t *testing.T) {
 	}
 }
 
-// REQ-6, REQ-7
 func TestJWKS_BackgroundFailureKeepsLastSuccess(t *testing.T) {
 	checkBackgroundDeadline(t, false)
 }
 
-// REQ-6
 func TestJWKS_BackgroundSuccessMovesLastSuccess(t *testing.T) {
 	checkBackgroundDeadline(t, true)
 }
@@ -205,7 +199,6 @@ func checkBackgroundDeadline(t *testing.T, success bool) {
 	}
 }
 
-// REQ-6
 func TestJWKS_GateClosesBackgroundRefresh(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -220,7 +213,6 @@ func TestJWKS_GateClosesBackgroundRefresh(t *testing.T) {
 	h.barrier(t, v, key, "invalid_token")
 }
 
-// REQ-8
 func TestRefresh_KeyPublishedAfterTheCallIsInTheSet(t *testing.T) {
 	for _, laterFails := range []bool{false, true} {
 		t.Run(fmt.Sprintf("later-fails-%t", laterFails), func(t *testing.T) {
@@ -275,7 +267,6 @@ func TestRefresh_KeyPublishedAfterTheCallIsInTheSet(t *testing.T) {
 	}
 }
 
-// REQ-5
 func TestJWKS_ConcurrentRotationNeverRejectsAnInstalledKey(t *testing.T) {
 	k1 := generateTestKey(t, "RSA", "k1", 2048)
 	k2 := generateTestKey(t, "RSA", "k2", 2048)
@@ -307,10 +298,8 @@ func TestJWKS_ConcurrentRotationNeverRejectsAnInstalledKey(t *testing.T) {
 	}
 }
 
-// REQ-7
 func TestJWKS_StaleIfErrorWithinMaxStale(t *testing.T) { checkStaleDeadline(t, []float64{1700001800}) }
 
-// REQ-7
 func TestJWKS_StaleTrustDeadline(t *testing.T) {
 	checkStaleDeadline(t, []float64{1700001800, 1700002700, 1700003540})
 }
@@ -335,7 +324,6 @@ func checkStaleDeadline(t *testing.T, schedule []float64) {
 	equal(t, h.count.Load(), count+1)
 }
 
-// REQ-7
 func TestJWKS_UnknownKidRefetchFailureIs503(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -347,7 +335,6 @@ func TestJWKS_UnknownKidRefetchFailureIs503(t *testing.T) {
 	equal(t, h.count.Load(), int64(2))
 }
 
-// REQ-7
 func TestJWKS_GateRemembersFailure(t *testing.T) {
 	for _, fail := range []bool{false, true} {
 		t.Run(fmt.Sprint(fail), func(t *testing.T) {
@@ -369,7 +356,6 @@ func TestJWKS_GateRemembersFailure(t *testing.T) {
 	}
 }
 
-// REQ-5
 func TestJWKS_NoRefetchOnBadSignature(t *testing.T) {
 	keys := testKeys(t)
 	h := newJWKSHarness(t, keys["rsa"])
@@ -382,12 +368,10 @@ func TestJWKS_NoRefetchOnBadSignature(t *testing.T) {
 	equal(t, h.count.Load(), int64(1))
 }
 
-// REQ-5
 func TestJWKS_KeyTypeMismatchIsUnknown(t *testing.T) {
 	runTokenRows(t, func(row tokenCase) bool { return strings.HasPrefix(row.ID, "key-type-confusion-") })
 }
 
-// REQ-4, REQ-7
 func TestJWKS_SuccessRequiresWholeReload(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	for _, name := range []string{"html", "not-set", "over-cap", "duplicate"} {
@@ -413,7 +397,6 @@ func TestJWKS_SuccessRequiresWholeReload(t *testing.T) {
 	}
 }
 
-// REQ-4
 func TestJWKS_SuccessRequiresEveryUsableKey(t *testing.T) {
 	anchor := generateTestKey(t, "RSA", "anchor", 2048)
 	rsaKey := generateTestKey(t, "RSA", "subject-rsa", 2048)
@@ -449,7 +432,6 @@ func TestJWKS_SuccessRequiresEveryUsableKey(t *testing.T) {
 	}
 }
 
-// REQ-4
 func TestJWKS_NoUsableKeyFailsReload(t *testing.T) {
 	anchor := generateTestKey(t, "RSA", "anchor", 2048)
 	for _, keys := range [][]map[string]any{{}, {{"kty": "oct", "kid": "oct", "k": "AA"}}} {
@@ -460,7 +442,6 @@ func TestJWKS_NoUsableKeyFailsReload(t *testing.T) {
 	}
 }
 
-// REQ-4
 func TestJWKS_UnusableKeysAreSkipped(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	for _, row := range []map[string]any{
@@ -475,7 +456,6 @@ func TestJWKS_UnusableKeysAreSkipped(t *testing.T) {
 	}
 }
 
-// REQ-4, REQ-6, REQ-7
 func TestJWKS_StaleSetSurvivesMalformedKey(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -496,7 +476,7 @@ func TestJWKS_StaleSetSurvivesMalformedKey(t *testing.T) {
 	equal(t, h.count.Load(), int64(3))
 }
 
-// REQ-3, REQ-4: the checked JWKS URL cannot redirect to an unchecked trust source.
+// The checked JWKS URL cannot redirect to an unchecked trust source.
 func TestJWKS_DoesNotFollowRedirects(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	target := newJWKSHarness(t, key)

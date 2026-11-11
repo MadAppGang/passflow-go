@@ -51,7 +51,7 @@ func ginTestVerifier(t *testing.T) (*auth.Verifier, func(string, int64) string) 
 	return v, sign
 }
 
-// REQ-17: real Gin request context, not a bridge-helper test.
+// Real Gin request context, not a bridge-helper test.
 func TestAuthgin_ContextPropagation(t *testing.T) {
 	v, sign := ginTestVerifier(t)
 	engine := gin.New()
@@ -76,7 +76,6 @@ func TestAuthgin_ContextPropagation(t *testing.T) {
 	}
 }
 
-// REQ-12, REQ-17
 func TestAuthgin_SingleWriteAndAbort(t *testing.T) {
 	v, sign := ginTestVerifier(t)
 	engine := gin.New()
@@ -102,7 +101,6 @@ func TestAuthgin_SingleWriteAndAbort(t *testing.T) {
 	}
 }
 
-// REQ-11, REQ-17, REQ-19
 func TestAuthgin_FreshnessConstructors(t *testing.T) {
 	body, err := os.ReadFile("../testdata/corpus/freshness.json")
 	if err != nil {

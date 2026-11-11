@@ -20,7 +20,6 @@ type acrCorpus struct {
 	} `json:"comparisons"`
 }
 
-// REQ-9
 func TestACR_LevelParseIntSemantics(t *testing.T) {
 	var data acrCorpus
 	loadCorpus(t, "acr-levels.json", 1, &data)
@@ -40,7 +39,6 @@ func TestACR_LevelParseIntSemantics(t *testing.T) {
 	}
 }
 
-// REQ-9
 func TestACR_SatisfiesExactInt64(t *testing.T) {
 	var data acrCorpus
 	loadCorpus(t, "acr-levels.json", 1, &data)
@@ -55,7 +53,6 @@ func TestACR_SatisfiesExactInt64(t *testing.T) {
 	}
 }
 
-// REQ-9
 func TestACR_SatisfiesRejectsLevelZeroRequired(t *testing.T) {
 	for _, row := range []struct{ token, required string }{{"3", "gold"}, {"3", ""}, {"3", "0"}, {"0", "0"}} {
 		t.Run(row.token+"/"+row.required, func(t *testing.T) {

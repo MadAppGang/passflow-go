@@ -15,7 +15,6 @@ func claimsWithRoles() *auth.Claims {
 	}}
 }
 
-// REQ-13
 func TestClaims_RolesFromRootGroup(t *testing.T) {
 	c := claimsWithRoles()
 	equal(t, c.Roles("t1"), []string{"admin"})
@@ -23,7 +22,6 @@ func TestClaims_RolesFromRootGroup(t *testing.T) {
 	equal(t, c.HasRole("t1", "viewer"), false)
 }
 
-// REQ-13
 func TestClaims_RolesIgnoreTenantRoles(t *testing.T) {
 	c := claimsWithRoles()
 	equal(t, c.HasRole("t1", "owner"), false)
@@ -31,7 +29,6 @@ func TestClaims_RolesIgnoreTenantRoles(t *testing.T) {
 	equal(t, c.Roles("t2"), []string(nil))
 }
 
-// REQ-13
 func TestClaims_RolesMissingRootGroupIsNil(t *testing.T) {
 	c := claimsWithRoles()
 	c.Tenants["missing-root"] = auth.TenantMembership{RootGroupID: "absent", Groups: map[string][]string{"other": {"admin"}}}
@@ -43,7 +40,6 @@ func TestClaims_RolesMissingRootGroupIsNil(t *testing.T) {
 	}
 }
 
-// REQ-13
 func TestClaims_RolesReturnsACopy(t *testing.T) {
 	c := claimsWithRoles()
 	first := c.Roles("t1")
@@ -57,7 +53,6 @@ func TestClaims_RolesReturnsACopy(t *testing.T) {
 	equal(t, c.Roles("missing"), []string(nil))
 }
 
-// REQ-13
 func TestClaims_UndecodableMembershipDropsTenantOnly(t *testing.T) {
 	runTokenRows(t, func(row tokenCase) bool { return len(row.Expect.TenantsAbsent) > 0 })
 	keys := testKeys(t)
@@ -75,12 +70,10 @@ func TestClaims_UndecodableMembershipDropsTenantOnly(t *testing.T) {
 	}
 }
 
-// REQ-13
 func TestClaims_MembershipKeysAreExact(t *testing.T) {
 	runTokenRows(t, func(row tokenCase) bool { return row.ID == "passflow-tm-keys-match-exactly" })
 }
 
-// REQ-13
 func TestClaims_NonStringRoleDropsTenantOnly(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	for _, where := range []string{"root", "other", "tenant_roles"} {
@@ -115,7 +108,6 @@ func TestClaims_NonStringRoleDropsTenantOnly(t *testing.T) {
 	})
 }
 
-// REQ-14
 func TestClaims_VerifiedByIsObjectIdentity(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)

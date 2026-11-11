@@ -28,7 +28,7 @@ import (
 	"github.com/madappgang/passflow-go/auth"
 )
 
-// REQ-19: generated keys, never committed key bytes or copies of the corpus.
+// Generated keys, never committed key bytes or copies of the corpus.
 type testKey struct {
 	id      string
 	private any

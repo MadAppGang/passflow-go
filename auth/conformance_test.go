@@ -14,18 +14,14 @@ import (
 	"github.com/madappgang/passflow-go/auth"
 )
 
-// REQ-1, REQ-2, REQ-12, REQ-13, REQ-19
 func TestConformance_TokenValidation(t *testing.T) {
 	runTokenRows(t, func(tokenCase) bool { return true })
 }
 
-// REQ-16, REQ-19
 func TestConformance_Challenges(t *testing.T) { checkChallengeCorpus(t) }
 
-// REQ-3, REQ-19
 func TestConformance_Config(t *testing.T) { checkConfigs(t, func(string) bool { return true }) }
 
-// REQ-9, REQ-19
 func TestConformance_NonStringACR(t *testing.T) {
 	var data acrCorpus
 	loadCorpus(t, "acr-levels.json", 1, &data)
@@ -68,7 +64,6 @@ type freshnessCorpus struct {
 	} `json:"max_age_input"`
 }
 
-// REQ-10, REQ-19
 func TestConformance_Freshness(t *testing.T) {
 	var data freshnessCorpus
 	loadCorpus(t, "freshness.json", 2, &data)
@@ -101,7 +96,6 @@ func TestConformance_Freshness(t *testing.T) {
 	}
 }
 
-// REQ-11, REQ-19
 func TestConformance_FreshnessConstructors(t *testing.T) {
 	var data freshnessCorpus
 	loadCorpus(t, "freshness.json", 2, &data)
@@ -138,7 +132,6 @@ func TestConformance_FreshnessConstructors(t *testing.T) {
 	}
 }
 
-// REQ-12, REQ-19
 func TestConformance_AuthorizationHeader(t *testing.T) {
 	var data struct {
 		Rows []struct {
@@ -225,7 +218,7 @@ func mutateJWK(t testing.TB, original map[string]any, mutation keyMutation) map[
 	return out
 }
 
-// REQ-4, REQ-19: valid controls are essential; rejecting every set must fail.
+// Valid controls are essential; rejecting every set must fail.
 func TestConformance_KeyAcceptance(t *testing.T) {
 	var data struct {
 		Cases []struct {

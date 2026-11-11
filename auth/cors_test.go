@@ -7,7 +7,6 @@ import (
 	"github.com/madappgang/passflow-go/auth"
 )
 
-// REQ-15
 func TestCORSExposedHeaders(t *testing.T) {
 	for _, row := range []struct {
 		name     string

@@ -12,7 +12,6 @@ import (
 	"github.com/madappgang/passflow-go/auth"
 )
 
-// REQ-2
 func TestVerify_AudienceAnyOf(t *testing.T) {
 	runTokenRows(t, func(row tokenCase) bool { return strings.HasPrefix(row.ID, "audience-") })
 }
@@ -21,7 +20,7 @@ type constructorTransport func(*http.Request) (*http.Response, error)
 
 func (fn constructorTransport) RoundTrip(r *http.Request) (*http.Response, error) { return fn(r) }
 
-// REQ-2: required issuer/audience cannot become an optional check when the claim is absent.
+// Required issuer/audience cannot become an optional check when the claim is absent.
 func TestVerify_RequiredIssuerAndAudience(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	for _, claim := range []string{"iss", "aud"} {
@@ -93,17 +92,14 @@ func checkConfigs(t *testing.T, selectRow func(string) bool) {
 	}
 }
 
-// REQ-3
 func TestNewVerifier_RejectsInsecureJWKSURL(t *testing.T) {
 	checkConfigs(t, func(id string) bool { return strings.HasPrefix(id, "jwks-url-") && !strings.Contains(id, "loopback-") })
 }
 
-// REQ-3
 func TestNewVerifier_AllowsLoopback(t *testing.T) {
 	checkConfigs(t, func(id string) bool { return strings.HasPrefix(id, "jwks-url-loopback-") })
 }
 
-// REQ-3
 func TestNewVerifier_LoopbackIsReadAsWritten(t *testing.T) {
 	for _, host := range []string{"127.1", "2130706433", "0x7f.1", "127.00.0.1"} {
 		t.Run(host, func(t *testing.T) {
@@ -115,12 +111,10 @@ func TestNewVerifier_LoopbackIsReadAsWritten(t *testing.T) {
 	}
 }
 
-// REQ-3
 func TestNewVerifier_ValidatesJWKSOptions(t *testing.T) {
 	checkConfigs(t, func(string) bool { return true })
 }
 
-// REQ-12
 func TestBearerToken_WhitespaceOnlyIsMissing(t *testing.T) {
 	h := newJWKSHarness(t)
 	v := h.verifier(t, nil)
@@ -138,12 +132,10 @@ func TestBearerToken_WhitespaceOnlyIsMissing(t *testing.T) {
 	equal(t, h.count.Load(), int64(0))
 }
 
-// REQ-2
 func TestVerify_IATNotComparedWithTheClock(t *testing.T) {
 	runTokenRows(t, func(row tokenCase) bool { return row.ID == "iat-absent" || row.ID == "iat-far-future" })
 }
 
-// REQ-2
 func TestVerify_NonNumericIATIsMalformed(t *testing.T) {
 	runTokenRows(t, func(row tokenCase) bool {
 		return row.ID == "iat-string" || row.ID == "iat-null" || row.ID == "iat-array"

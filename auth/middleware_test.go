@@ -10,7 +10,6 @@ import (
 	"github.com/madappgang/passflow-go/auth"
 )
 
-// REQ-12, REQ-17
 func TestRequire_WithoutAuthenticateIs500(t *testing.T) {
 	// Contract amendment A1: each wiring error identifies its own constructor.
 	for _, tc := range []struct {
@@ -32,7 +31,6 @@ func TestRequire_WithoutAuthenticateIs500(t *testing.T) {
 	}
 }
 
-// REQ-14, REQ-17
 func TestVerifierRequire_AuthenticatesOnDemand(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -52,7 +50,7 @@ func TestVerifierRequire_AuthenticatesOnDemand(t *testing.T) {
 	}
 }
 
-// REQ-14: exact identity and the contract-declared verification budget both bind reuse.
+// Exact identity and the contract-declared verification budget both bind reuse.
 func TestVerifierRequire_ReusesOwnClaims(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -76,7 +74,6 @@ func TestVerifierRequire_ReusesOwnClaims(t *testing.T) {
 	}
 }
 
-// REQ-14
 func TestVerifierRequire_ReverifiesCopiedClaims(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -126,7 +123,7 @@ type compositionRow struct {
 	} `json:"expect"`
 }
 
-// REQ-14: corpus outcomes, public claim provenance and its declared verification budget.
+// Corpus outcomes, public claim provenance and its declared verification budget.
 func TestVerifierRequire_ReverifiesClaimsFromAnotherVerifier(t *testing.T) {
 	var data struct {
 		Rows []compositionRow `json:"composition"`
@@ -200,7 +197,6 @@ func TestVerifierRequire_ReverifiesClaimsFromAnotherVerifier(t *testing.T) {
 	}
 }
 
-// REQ-14
 func TestAuthenticate_ReplacesUpstreamClaims(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	h := newJWKSHarness(t, key)
@@ -220,7 +216,6 @@ func TestAuthenticate_ReplacesUpstreamClaims(t *testing.T) {
 	equal(t, w.Code, 200)
 }
 
-// REQ-10
 func TestRequireFresh_MeasuresFromVerifiedAt(t *testing.T) {
 	c := &auth.Claims{AuthTime: time.Unix(1700000300, 0), VerifiedAt: time.Unix(1700000600, 0)}
 	w := httptest.NewRecorder()
@@ -229,7 +224,6 @@ func TestRequireFresh_MeasuresFromVerifiedAt(t *testing.T) {
 	equal(t, w.Code, 200) // The real wall clock is irrelevant.
 }
 
-// REQ-10
 func TestRequireFresh_ComparesWholeSeconds(t *testing.T) {
 	key := generateTestKey(t, "RSA", "k1", 2048)
 	for _, row := range []struct {
@@ -256,7 +250,6 @@ func TestRequireFresh_ComparesWholeSeconds(t *testing.T) {
 	}
 }
 
-// REQ-11
 func TestRequireFresh_PanicsBelowOneSecond(t *testing.T) {
 	for _, d := range []time.Duration{-time.Second, 0, 900 * time.Millisecond} {
 		mustPanic(t, func() { auth.RequireFresh(d) })
