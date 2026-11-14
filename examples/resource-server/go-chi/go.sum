@@ -4,5 +4,3 @@ github.com/go-chi/cors v1.2.2 h1:Jmey33TE+b+rB7fT8MUy1u0I4L+NARQlK6LhzKPSyQE=
 github.com/go-chi/cors v1.2.2/go.mod h1:sSbTewc+6wYHBBCW7ytsFSn836hqM7JxpglAy2Vzc58=
 github.com/golang-jwt/jwt/v5 v5.3.1 h1:kYf81DTWFe7t+1VvL7eS+jKFVWaUnK9cB1qbwn63YCY=
 github.com/golang-jwt/jwt/v5 v5.3.1/go.mod h1:fxCRLWMO43lRc8nhHWY6LGqRcf+1gQWArsqaEUEa5bE=
-github.com/madappgang/passflow-go v0.1.1 h1:eUdkphOPmCABO2T8gCeyPp48tauZc3v/N2jIWm8sVgc=
-github.com/madappgang/passflow-go v0.1.1/go.mod h1:hu5BfKKJFsq/xShKR05VmaeUJFa5PgZ1GnL2B35SH1I=

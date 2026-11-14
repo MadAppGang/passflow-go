@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/madappgang/passflow-go/auth"
+	"github.com/usepassflow/go/auth"
 )
 
 func claimsWithRoles() *auth.Claims {

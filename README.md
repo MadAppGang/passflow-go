@@ -1,12 +1,12 @@
 # passflow-go
 
-Go libraries for services that accept [Passflow](https://github.com/madappgang/passflow) tokens. `auth` protects an HTTP endpoint with a verified access token. When the token's authentication is too weak or too old, it answers with the RFC 9470 step-up challenge that the Passflow browser SDK understands.
+Go libraries for services that accept [Passflow](https://github.com/usepassflow/passflow) tokens. `auth` protects an HTTP endpoint with a verified access token. When the token's authentication is too weak or too old, it answers with the RFC 9470 step-up challenge that the Passflow browser SDK understands.
 
 ```bash
-go get github.com/madappgang/passflow-go/auth
+go get github.com/usepassflow/go/auth
 ```
 
-Requires Go 1.27 or newer, and its only dependency is `github.com/golang-jwt/jwt/v5` v5.3.0.
+Requires Go 1.27 or newer, and its only dependency is `github.com/golang-jwt/jwt/v5` v5.3.1.
 
 ## Use it
 
@@ -33,7 +33,7 @@ The Passflow documentation has a step-by-step Go tutorial (`docs/tutorials/go-ba
 The Gin adapter is a separate module, so the core module's dependencies stay at one:
 
 ```bash
-go get github.com/madappgang/passflow-go/auth/authgin
+go get github.com/usepassflow/go/auth/authgin
 ```
 
 ```go

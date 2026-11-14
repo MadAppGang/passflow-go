@@ -1,6 +1,6 @@
 # Go + Chi resource server
 
-An API protected by [`github.com/madappgang/passflow-go/auth`](../../../auth), the published
+An API protected by [`github.com/usepassflow/go/auth`](../../../auth), the published
 module. It answers the React client and `scripts/api-check.sh` next door. See
 [`../README.md`](../README.md) for the whole walkthrough.
 

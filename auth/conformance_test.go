@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/madappgang/passflow-go/auth"
+	"github.com/usepassflow/go/auth"
 )
 
 func TestConformance_TokenValidation(t *testing.T) {

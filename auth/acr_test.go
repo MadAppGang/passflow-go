@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/madappgang/passflow-go/auth"
+	"github.com/usepassflow/go/auth"
 )
 
 type acrCorpus struct {

@@ -16,8 +16,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	jwt "github.com/golang-jwt/jwt/v5"
-	"github.com/madappgang/passflow-go/auth"
-	"github.com/madappgang/passflow-go/auth/authgin"
+	"github.com/usepassflow/go/auth"
+	"github.com/usepassflow/go/auth/authgin"
 )
 
 func ginTestVerifier(t *testing.T) (*auth.Verifier, func(string, int64) string) {

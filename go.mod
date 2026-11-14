@@ -1,4 +1,4 @@
-module github.com/madappgang/passflow-go
+module github.com/usepassflow/go
 
 go 1.27.0
 

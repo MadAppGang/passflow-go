@@ -6,7 +6,7 @@ Docker image, so they work from a plain clone of this repository.
 
 | Directory | What it is | Port |
 |---|---|---|
-| [`go-chi/`](go-chi) | Chi API on [`github.com/madappgang/passflow-go/auth`](../../auth) | 8081 |
+| [`go-chi/`](go-chi) | Chi API on [`github.com/usepassflow/go/auth`](../../auth) | 8081 |
 | [`node-express/`](node-express) | Express API on [`@passflow/node`](https://www.npmjs.com/package/@passflow/node) | 8082 |
 | [`react-client/`](react-client) | Vite page on `@passflow/react`, on another origin | 5173 |
 | [`devtool/`](devtool) | Creates the testdata and issues real tokens through Passflow's public API | |

@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/madappgang/passflow-go/auth"
+	"github.com/usepassflow/go/auth"
 )
 
 func TestVerify_AudienceAnyOf(t *testing.T) {

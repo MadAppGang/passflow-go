@@ -25,7 +25,7 @@ import (
 	"time"
 
 	jwt "github.com/golang-jwt/jwt/v5"
-	"github.com/madappgang/passflow-go/auth"
+	"github.com/usepassflow/go/auth"
 )
 
 // Generated keys, never committed key bytes or copies of the corpus.

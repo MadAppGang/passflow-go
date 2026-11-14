@@ -1,3 +1,3 @@
-module github.com/madappgang/passflow-go/examples/resource-server/devtool
+module github.com/usepassflow/go/examples/resource-server/devtool
 
 go 1.27.0

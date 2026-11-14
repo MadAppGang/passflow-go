@@ -1,4 +1,4 @@
-// Command go-chi is an API protected by github.com/madappgang/passflow-go/auth on the Chi router.
+// Command go-chi is an API protected by github.com/usepassflow/go/auth on the Chi router.
 // The React client and scripts/api-check.sh next door call it. See README.md.
 package main
 
@@ -16,7 +16,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
-	"github.com/madappgang/passflow-go/auth"
+	"github.com/usepassflow/go/auth"
 )
 
 const shutdownTimeout = 5 * time.Second

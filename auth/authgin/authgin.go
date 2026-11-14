@@ -1,4 +1,4 @@
-// Package authgin adapts [github.com/madappgang/passflow-go/auth] to Gin.
+// Package authgin adapts [github.com/usepassflow/go/auth] to Gin.
 //
 // A Gin group takes one Authenticate upstream, and Require and RequireFresh act on the claims it
 // produced:
@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/madappgang/passflow-go/auth"
+	"github.com/usepassflow/go/auth"
 )
 
 // Authenticate verifies the presented token with v and puts its claims in the request context,

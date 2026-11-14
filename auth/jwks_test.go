@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/madappgang/passflow-go/auth"
+	"github.com/usepassflow/go/auth"
 )
 
 func verifyHappy(t testing.TB, v *auth.Verifier, key *testKey) {

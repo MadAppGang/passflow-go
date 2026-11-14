@@ -1,11 +1,11 @@
-module github.com/madappgang/passflow-go/auth/authgin
+module github.com/usepassflow/go/auth/authgin
 
 go 1.27.0
 
 require (
 	github.com/gin-gonic/gin v1.12.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
-	github.com/madappgang/passflow-go v0.1.0
+	github.com/usepassflow/go v0.2.0
 )
 
 require (
@@ -41,4 +41,4 @@ require (
 	google.golang.org/protobuf v1.36.12 // indirect
 )
 
-replace github.com/madappgang/passflow-go => ../..
+replace github.com/usepassflow/go => ../..
